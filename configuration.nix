@@ -1,6 +1,7 @@
 { config, pkgs, ... }: { 
 	
-	imports = [ ./hardware-configuration.nix ];
+	imports = [ ./hardware-configuration.nix
+							./programas.nix ];
 
 	
 	# bootloader
@@ -62,16 +63,6 @@
 
 
 	# ferramentas e programas
-	environment.systemPackages = with 
-	pkgs; [ git vim wget
-		curl htop unzip
-		networkmanagerapplet
-		pavucontrol firefox
-		gparted neofetch cmatrix
-		cosmic-term cosmic-files
-		starship pywal
-		figlet vscode spotify
-		discord tor-browser ];
 	programs.starship.enable = true;
 
 
