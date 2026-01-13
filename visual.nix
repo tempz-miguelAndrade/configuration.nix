@@ -12,7 +12,7 @@
   # Nota: No COSMIC, isso geralmente é feito via interface, 
   # mas vamos garantir que as ferramentas de dashboard estejam prontas.
   environment.systemPackages = with pkgs; [
-    termusic    # Gráficos de música no terminal
+    cava    # Gráficos de música no terminal
     peaclock    # Relógio digital bonito para terminal
     cmatrix     # O efeito Matrix
   ];
