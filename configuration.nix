@@ -63,7 +63,9 @@
 
 	# ferramentas e programas
 	programs.starship.enable = true;
-
+	environment.sessionVariables = {
+  	PATH = [ "$HOME/.local/bin" ];
+	};
 
 	# interface cosmic
 	services.desktopManager.cosmic.enable = true;
