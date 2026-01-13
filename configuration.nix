@@ -63,21 +63,12 @@
 
 	# ferramentas e programas
 	programs.starship.enable = true;
-	environment.sessionVariables = {
-  	PATH = [ "$HOME/.local/bin" ];
-	};
-	environment.shellAliases = {
-  		dash = "dashboard.sh";
-	};
-
-	# Isso garante que sua pasta pessoal de scripts seja vista pelo sistema
-	environment.localBinInPath = true;
 
 
 	# interface cosmic
 	services.desktopManager.cosmic.enable = true;
 	services.displayManager.cosmic-greeter.enable = true;
-	services.displayManager.autoLogin.user = "tempz";
+
 
 	# versão
 	system.stateVersion = "24.11";
