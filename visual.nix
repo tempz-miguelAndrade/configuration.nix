@@ -24,6 +24,5 @@
   # Se você quiser criar apelidos (aliases), coloque-os aqui fora:
   environment.shellAliases = {
     ll = "ls -l";
-    matrix = "neo";
   };
 }
