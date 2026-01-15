@@ -5,5 +5,6 @@
     gparted cosmic-term cosmic-files
     starship pywal figlet vscode 
     spotify discord tor-browser 
+    alsa-utils alsa-ucm-conf
   ];
 }
