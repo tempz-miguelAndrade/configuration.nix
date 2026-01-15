@@ -67,17 +67,18 @@
         alsa-utils
     ];
 
-    # --- CORREÇÃO PARA CHIP CONEXANT (RAPTOR LAKE) ---
+    # --- CORREÇÃO AVANÇADA PARA CONEXANT CX11970 ---
   boot.kernelParams = [ 
-    "snd_hda_intel.power_save=0" 
+    "snd_hda_intel.power_save=0"
     "snd_hda_intel.power_save_controller=N"
-    # Tenta forçar o reconhecimento dos pinos de áudio
+    # Força o driver a ignorar o mapeamento padrão do BIOS que costuma vir errado
     "snd_hda_intel.model=laptop-dmic" 
   ];
 
   boot.extraModprobeConfig = ''
-    # Algumas placas Conexant precisam deste modelo específico para "acordar"
-    options snd-hda-intel model=alc285-hp-spectre
+    # Testaremos o modelo 'laptop-dmic' que é o mais compatível com Raptor Lake
+    options snd-hda-intel model=laptop-dmic
+    # Caso não funcione, a próxima tentativa seria: options snd-hda-intel model=hp-gh007tx
   '';
 
     hardware.graphics.enable = true;
