@@ -3,7 +3,7 @@
 
     
 
-    imports = [ ./hardware-configuration.nix ];
+    imports = [ ./hardware-configuration.nix ./programas.nix ./visual.nix ];
 
 
     # Bootloader (Grub)
