@@ -78,12 +78,7 @@
     ];
 
     # --- CORREÇÃO AVANÇADA PARA CONEXANT CX11970 ---
-  boot.kernelParams = [ 
-    "snd_hda_intel.power_save=0"
-    "snd_hda_intel.power_save_controller=N"
-    # Força o driver a ignorar o mapeamento padrão do BIOS que costuma vir errado
-    "snd_hda_intel.model=laptop-dmic" 
-  ];
+    boot.kernelParams = [ "snd_hda_intel.model=auto" "snd_hda_intel.probe_mask=1" ];
 
   boot.extraModprobeConfig = ''
     # Testaremos o modelo 'laptop-dmic' que é o mais compatível com Raptor Lake
@@ -102,4 +97,5 @@
 
     # versão
     system.stateVersion = "24.11";
+
 }
