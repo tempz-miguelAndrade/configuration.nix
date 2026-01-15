@@ -44,33 +44,41 @@
         extraGroups = [ "wheel" "networkmanager" "video" "audio" ]; # Adicionei "audio" por garantia
     };
 
-    # --- ÁUDIO (HDA LEGACY ESTÁVEL) ---
+# --- ÁUDIO (FORÇADO HDA LEGACY) ---
 
-    security.rtkit.enable = true;
+security.rtkit.enable = true;
 
-    services.pipewire = {
-        enable = true;
-        alsa.enable = true;
-        alsa.support32Bit = true;
-        pulse.enable = true;
-    };
+services.pipewire = {
+  enable = true;
+  alsa.enable = true;
+  alsa.support32Bit = true;
+  pulse.enable = true;
+};
 
-    environment.systemPackages = with pkgs; [
-        alsa-utils
-        alsa-ucm-conf
-    ];
+environment.systemPackages = with pkgs; [
+  alsa-utils
+  alsa-ucm-conf
+];
 
-    # Desativa o stack AVS (kernel novo)
-    boot.blacklistedKernelModules = [
-        "snd_soc_avs"
-    ];
+boot.kernelParams = [
+  "snd-intel-dspcfg.dsp_driver=3"
+];
 
-    # Força driver HDA legacy (funciona em Raptor Lake)
-    boot.extraModprobeConfig = ''
-        options snd-hda-intel dmic_detect=0
-    '';
+boot.blacklistedKernelModules = [
+  "snd_soc_avs"
+  "snd_sof"
+  "snd_sof_pci"
+  "snd_sof_intel_hda_common"
+  "snd_sof_intel_hda"
+  "snd_soc_skl_hda_dsp"
+];
 
-# -------------------------------
+boot.extraModprobeConfig = ''
+  options snd-hda-intel dmic_detect=0
+'';
+
+# --------------------------------
+
     hardware.graphics.enable = true;
 
     # ferramentas e programas
