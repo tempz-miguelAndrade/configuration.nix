@@ -13,9 +13,9 @@
         efiSupport = true;
         useOSProber = true;
     };
-
     
-    # kernel - Ótima escolha para hardware novo (Raptor Lake)
+    # kernel
+    # Mantenha o latest, o Raptor Lake gosta de kernels novos.
     boot.kernelPackages = pkgs.linuxPackages_latest;
 
     # rede e hardware
@@ -26,7 +26,10 @@
     # otimizações da interface cosmic
     nix.settings.download-buffer-size = 250000000;
     nix.settings.max-jobs = 1;
+
+    # FIRMWARE: Isso é vital para o Raptor Lake
     hardware.enableAllFirmware = true;
+    hardware.firmware = [ pkgs.sof-firmware ]; 
 
     # teclado
     console.keyMap = "br-abnt2";
@@ -41,43 +44,32 @@
     # usuário 
     users.users.tempz = {
         isNormalUser = true;
-        extraGroups = [ "wheel" "networkmanager" "video" "audio" ]; # Adicionei "audio" por garantia
+        extraGroups = [ "wheel" "networkmanager" "video" "audio" ];
     };
 
-# --- ÁUDIO (FORÇADO HDA LEGACY) ---
+    # --- ÁUDIO CORRETO (PIPEWIRE + SOF) ---
+    
+    # RTKit dá prioridade ao processo de áudio para não picotar
+    security.rtkit.enable = true;
 
-security.rtkit.enable = true;
+    services.pipewire = {
+        enable = true;
+        alsa.enable = true;
+        alsa.support32Bit = true;
+        pulse.enable = true;
+        # wireplumber é o gerenciador de sessão moderno, vamos garantir que está ativo
+        wireplumber.enable = true; 
+    };
 
-services.pipewire = {
-  enable = true;
-  alsa.enable = true;
-  alsa.support32Bit = true;
-  pulse.enable = true;
-};
+    # Pacotes úteis para controle de volume caso a interface bugue
+    environment.systemPackages = with pkgs; [
+        pavucontrol # Controle de volume "clássico" e super confiável
+        alsa-utils
+    ];
 
-environment.systemPackages = with pkgs; [
-  alsa-utils
-  alsa-ucm-conf
-];
-
-boot.kernelParams = [
-  "snd-intel-dspcfg.dsp_driver=3"
-];
-
-boot.blacklistedKernelModules = [
-  "snd_soc_avs"
-  "snd_sof"
-  "snd_sof_pci"
-  "snd_sof_intel_hda_common"
-  "snd_sof_intel_hda"
-  "snd_soc_skl_hda_dsp"
-];
-
-boot.extraModprobeConfig = ''
-  options snd-hda-intel dmic_detect=0
-'';
-
-# --------------------------------
+    # Removemos todos os "boot.blacklistedKernelModules" e "boot.kernelParams"
+    # O kernel Linux moderno sabe lidar com Raptor Lake sozinho se tiver o firmware (sof-firmware).
+    # --------------------------------------
 
     hardware.graphics.enable = true;
 
