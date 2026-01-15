@@ -14,10 +14,6 @@
         useOSProber = true;
     };
 
-    boot.loader.grub.extraConfig = ''
-        set linux_cmdline="snd-intel-dspcfg.dsp_driver=1 snd-sof-intel-hda-common.hda_model=alc245-hp"
-    '';
-
     
     # kernel - Ótima escolha para hardware novo (Raptor Lake)
     boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -30,7 +26,7 @@
     # otimizações da interface cosmic
     nix.settings.download-buffer-size = 250000000;
     nix.settings.max-jobs = 1;
-    hardware.enableAllFirmware = true; # Isso é crucial para o seu som Intel SOF
+    hardware.enableAllFirmware = true;
 
     # teclado
     console.keyMap = "br-abnt2";
@@ -48,36 +44,33 @@
         extraGroups = [ "wheel" "networkmanager" "video" "audio" ]; # Adicionei "audio" por garantia
     };
 
-    # --- CORREÇÃO DO ÁUDIO AQUI ---
-    
-    # O PipeWire precisa do RTKit para ganhar prioridade no processador e não picotar o som
+    # --- ÁUDIO (HDA LEGACY ESTÁVEL) ---
+
     security.rtkit.enable = true;
-    
+
     services.pipewire = {
         enable = true;
         alsa.enable = true;
         alsa.support32Bit = true;
         pulse.enable = true;
-        
-        # Se você usar Jack (música profissional), descomente abaixo, mas para uso normal não precisa
-        # jack.enable = true; 
     };
-    
-    # Garantia extra para firmwares de áudio modernos
-    hardware.firmware = with pkgs; [
-        sof-firmware
+
+    environment.systemPackages = with pkgs; [
+        alsa-utils
+        alsa-ucm-conf
     ];
 
-    #boot.kernelParams = [
-    #   "snd-intel-dspcfg.dsp_driver=3"
-    #];
+    # Desativa o stack AVS (kernel novo)
+    boot.blacklistedKernelModules = [
+        "snd_soc_avs"
+    ];
 
+    # Força driver HDA legacy (funciona em Raptor Lake)
     boot.extraModprobeConfig = ''
-    options snd-hda-intel dmic_detect=0
+        options snd-hda-intel dmic_detect=0
     '';
 
-    # ------------------------------
-
+# -------------------------------
     hardware.graphics.enable = true;
 
     # ferramentas e programas
