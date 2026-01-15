@@ -69,6 +69,21 @@
 
     # Removemos todos os "boot.blacklistedKernelModules" e "boot.kernelParams"
     # O kernel Linux moderno sabe lidar com Raptor Lake sozinho se tiver o firmware (sof-firmware).
+
+    # --- CORREÇÃO CIRÚRGICA PARA RAPTOR LAKE + CONEXANT ---
+  
+  boot.kernelParams = [ 
+    # Impede que a placa de som "durma" (resolve os estalos e o som que some)
+    "snd_hda_intel.power_save=0" 
+    "snd_hda_intel.power_save_controller=N"
+  ];
+
+  boot.extraModprobeConfig = ''
+    # Força o chip Conexant a usar um modelo de pinagem genérico para notebooks
+    options snd-hda-intel model=laptop-dmic
+  '';
+
+  # Garante que o firmware SOF está disponível e atualizado
     # --------------------------------------
 
     hardware.graphics.enable = true;
