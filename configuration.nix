@@ -1,101 +1,107 @@
-{ config, pkgs, ... }: { 
-    
-    imports = [ ./hardware-configuration.nix ./programas.nix ./visual.nix ];
 
-    # bootloader
+ { config, pkgs, ... }: { 
+
+    
+
+    imports = [ ./hardware-configuration.nix ];
+
+
+    # Bootloader (Grub)
+
     boot.loader.systemd-boot.enable = false; 
+
     boot.loader.efi.canTouchEfiVariables = true;
 
-    # grubloader
+
     boot.loader.grub = {
+
         enable = true;
+
         device = "nodev";
+
         efiSupport = true;
+
         useOSProber = true;
+
     };
 
-    # Mantém apenas as últimas 3 versões do sistema para não lotar o boot
-  boot.loader.grub.configurationLimit = 3;
 
-  # Limpeza automática semanal
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
-  };
-    
-    # kernel
-    # Mantenha o latest, o Raptor Lake gosta de kernels novos.
+    # Kernel mais recente
+
     boot.kernelPackages = pkgs.linuxPackages_latest;
 
-    # rede e hardware
+
+    # Rede e Hardware
+
     networking.hostName = "nixos-tempz";
+
     networking.networkmanager.enable = true;
+
     nixpkgs.config.allowUnfree = true;
 
-    # otimizações da interface cosmic
+
+    # Otimizações
+
     nix.settings.download-buffer-size = 250000000;
+
     nix.settings.max-jobs = 1;
 
-    # FIRMWARE: Isso é vital para o Raptor Lake
     hardware.enableAllFirmware = true;
-    hardware.firmware = [ pkgs.sof-firmware ]; 
 
-    # teclado
+
+    # Teclado e Idioma
+
     console.keyMap = "br-abnt2";
+
     i18n.defaultLocale = "pt_BR.UTF-8";
 
-    # teclado pra interface
+
     services.xserver.xkb = {
+
         layout = "br";
+
         variant = "";
-    };
-    
-    # usuário 
-    users.users.tempz = {
-        isNormalUser = true;
-        extraGroups = [ "wheel" "networkmanager" "video" "audio" ];
+
     };
 
-    # --- ÁUDIO CORRETO (PIPEWIRE + SOF) ---
-    
-    # RTKit dá prioridade ao processo de áudio para não picotar
-    security.rtkit.enable = true;
+
+    # Usuário
+
+    users.users.tempz = {
+
+        isNormalUser = true;
+
+        extraGroups = [ "wheel" "networkmanager" "video" ];
+
+    };
+
+
+    # Áudio e Vídeo
 
     services.pipewire = {
+
         enable = true;
+
         alsa.enable = true;
-        alsa.support32Bit = true;
+
         pulse.enable = true;
-        # wireplumber é o gerenciador de sessão moderno, vamos garantir que está ativo
-        wireplumber.enable = true; 
+
     };
-
-    # Pacotes úteis para controle de volume caso a interface bugue
-    environment.systemPackages = with pkgs; [
-        pavucontrol # Controle de volume "clássico" e super confiável
-        alsa-utils
-    ];
-
-    # --- CORREÇÃO AVANÇADA PARA CONEXANT CX11970 ---
-    boot.kernelParams = [ "snd_hda_intel.model=alc255-acer" "snd_hda_intel.probe_mask=1" ];
-
-  boot.extraModprobeConfig = ''
-    # Testaremos o modelo 'laptop-dmic' que é o mais compatível com Raptor Lake
-    options snd-hda-intel model=laptop-dmic
-    # Caso não funcione, a próxima tentativa seria: options snd-hda-intel model=hp-gh007tx
-  '';
 
     hardware.graphics.enable = true;
 
-    # ferramentas e programas
-    programs.starship.enable = true;
 
-    # interface cosmic
+    # Interface COSMIC
+
     services.desktopManager.cosmic.enable = true;
+
     services.displayManager.cosmic-greeter.enable = true;
 
-    # versão
+    programs.starship.enable = true;
+
+
+    # Versão do sistema (Não altere)
+
     system.stateVersion = "24.11";
 
-}
+} 
