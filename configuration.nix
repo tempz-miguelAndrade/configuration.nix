@@ -65,6 +65,10 @@
 
     hardware.graphics.enable = true;
 
+    services.xserver.displayManager.setupCommands = ''
+        ${pkgs.xorg.xrandr}/bin/xrandr --output HDMI-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output eDP-1 --mode 1366x768 --pos 1920x0 --rotate normal
+    '';
+
 
     # Interface COSMIC
     services.desktopManager.cosmic.enable = true;
