@@ -6,6 +6,6 @@
     starship pywal figlet vscode 
     spotify discord tor-browser 
     alsa-utils alsa-ucm-conf
-    alsa-tools pkgs.notion
+    alsa-tools pkgs.notion-app
   ];
 }
