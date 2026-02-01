@@ -18,8 +18,7 @@
       device = "nodev";
       efiSupport = true;
       useOSProber = true;
-      configurationLimit = 5;
-      # Isso aqui resolve o problema do Acer
+      configurationLimit = 3;
       efiInstallAsRemovable = true; 
     };
     timeout = 5;
