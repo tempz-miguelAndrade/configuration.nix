@@ -9,16 +9,17 @@
     # Bootloader
   boot.loader = {
     efi = {
-      canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot"; # Certifique-se que este é o local onde sua partição EFI está montada
+      # Mude para false para aceitar o modo Removível
+      canTouchEfiVariables = false; 
+      efiSysMountPoint = "/boot";
     };
     grub = {
       enable = true;
       device = "nodev";
       efiSupport = true;
       useOSProber = true;
-      configurationLimit = 5; # Reduzi para 5 para economizar espaço na partição EFI de 100MB
-      # Essa linha abaixo é o segredo para notebooks Acer/Dual Boot:
+      configurationLimit = 5;
+      # Isso aqui resolve o problema do Acer
       efiInstallAsRemovable = true; 
     };
     timeout = 5;
