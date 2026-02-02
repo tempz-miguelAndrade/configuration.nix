@@ -19,7 +19,6 @@
       useOSProber = true;
       configurationLimit = 3;
       efiInstallAsRemovable = true;
-      # AQUI: Como você já está dentro de 'grub', use apenas o nome da opção
       copyKernels = false; 
     };
     timeout = 5;
@@ -62,7 +61,7 @@
   # Otimizações de Sistema e Nix Store
   nix.settings = {
     max-jobs = "auto"; 
-    auto-optimise-store = true; # Crucial para economizar espaço no seu SSD de 512GB
+    auto-optimise-store = true; # Crucial para economizar espaço no SSD 512gb
     experimental-features = [ "nix-command" "flakes" ]; # Habilita as ferramentas modernas do Nix
     download-buffer-size = 67108864; # 64MB: mais estável que 250MB para downloads grandes
   };
