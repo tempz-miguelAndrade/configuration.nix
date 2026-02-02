@@ -79,11 +79,3 @@ O sistema se mantém limpo e otimizado automaticamente:
 * **Garbage Collection:** Semanal, deleta arquivos com mais de 7 dias.
 * **Otimização do Store:** Deduplicação automática de arquivos no `/nix/store`.
 * **SSD Trim:** Serviço `fstrim` ativo para saúde do NVMe.
-
----
-
-## 💿 Como Aplicar
-
-1. Copie os arquivos para o diretório do NixOS:
-   ```bash
-   sudo cp *.nix /etc/nixos/
