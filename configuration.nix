@@ -22,13 +22,12 @@
       copyKernels = false; 
     };
     timeout = 5;
-
-    # Carrega o driver que lê as teclas Fn (brilho, tela, wifi)
+  };
+  # Carrega o driver que lê as teclas Fn (brilho, tela, wifi)
     boot.kernelModules = [ "acer_wmi" ];
 
     # Serviço essencial para traduzir o aperto da tecla em evento do sistema
     services.acpid.enable = true;
-  };
 
 
 
