@@ -19,6 +19,7 @@ let
     obsidian      # Notas e organização
     tor-browser   # Navegação privada
     firefox       # Navegador principal
+    whatsapp-for-mac
   ];
 
   # --- CATEGORIA: DESENVOLVIMENTO E TOOLS ---
