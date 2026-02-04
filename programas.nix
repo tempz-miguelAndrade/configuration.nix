@@ -37,6 +37,9 @@ let
     alsa-tools    # Ferramentas avançadas
     libva-utils   # vainfo para testar vídeo
     intel-gpu-tools # Monitor da GPU Intel (intel_gpu_top)
+    pkgs.wdisplays      # GUI para gerenciar telas (substituto visual do Fn+F7)
+    pkgs.wev            # Wayland Event Viewer (para debugar se a tecla está respondendo)
+    pkgs.brightnessctl  # Controle de brilho via terminal (caso o Fn de brilho falhe)
   ];
 
   # --- CATEGORIA: COSMIC NATIVE ---
